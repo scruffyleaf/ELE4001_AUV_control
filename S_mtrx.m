@@ -1,7 +1,7 @@
-function S = S_mtrx(alpha)
+function S = S_mtrx(v)
 
-S = [0,        -alpha(3), alpha(2);
-    alpha(3),  0,         -alpha(1);
-    -alpha(2), alpha(1),  0;
+S = [0, -v(3), v(2);
+    v(3), 0, -v(1);
+    -v(2), v(1), 0;
     ];
 end
