@@ -1,0 +1,6 @@
+% use to edit graphs in matlab
+
+set(0,'ShowHiddenHandles','on')
+set(gcf,'menubar','figure')
+grid on
+
