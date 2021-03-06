@@ -1,0 +1,15 @@
+PWD /Users/shanerutherford/Documents/MATLAB/MSS/documentation/Modelling and Simulation of Marine System Dynamics
+INPUT /usr/local/texlive/2020basic/texmf.cnf
+INPUT /usr/local/texlive/2020basic/texmf-dist/web2c/texmf.cnf
+INPUT /usr/local/texlive/2020basic/texmf-var/web2c/pdftex/pdflatex.fmt
+INPUT /Users/shanerutherford/Documents/MATLAB/MSS/documentation/Modelling and Simulation of Marine System Dynamics/README.tex
+OUTPUT /Users/shanerutherford/Documents/MATLAB/MSS/documentation/Modelling and Simulation of Marine System Dynamics/README.log
+INPUT /usr/local/texlive/2020basic/texmf-dist/tex/latex/l3backend/l3backend-pdfmode.def
+INPUT /usr/local/texlive/2020basic/texmf-dist/tex/latex/l3backend/l3backend-pdfmode.def
+INPUT /Users/shanerutherford/Documents/MATLAB/MSS/documentation/Modelling and Simulation of Marine System Dynamics/README.aux
+INPUT /Users/shanerutherford/Documents/MATLAB/MSS/documentation/Modelling and Simulation of Marine System Dynamics/README.aux
+OUTPUT /Users/shanerutherford/Documents/MATLAB/MSS/documentation/Modelling and Simulation of Marine System Dynamics/README.aux
+OUTPUT /Users/shanerutherford/Documents/MATLAB/MSS/documentation/Modelling and Simulation of Marine System Dynamics/README.pdf
+INPUT /usr/local/texlive/2020basic/texmf-var/fonts/map/pdftex/updmap/pdftex.map
+INPUT /Users/shanerutherford/Documents/MATLAB/MSS/documentation/Modelling and Simulation of Marine System Dynamics/README.aux
+INPUT /usr/local/texlive/2020basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb
