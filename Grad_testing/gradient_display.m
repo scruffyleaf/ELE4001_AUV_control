@@ -1,13 +1,16 @@
-PLOT_GOAL = 1;
+close all;
+
+PLOT_GOAL = 0;
 PLOT_OBSTACLE = 1;
-STREAMLINES = 1;
+WALL_FOLLOWER = 0;
+STREAMLINES = 0;
 VECTORS = 1;
 
-STEP_SIZE = 20/10;
+STEP_SIZE = 20/20;
 
 x = -10:STEP_SIZE:10;
 y = -10:STEP_SIZE:10;
-z = 0:STEP_SIZE:20;
+z = -5:STEP_SIZE:15;
 
 [X, Y, Z] = meshgrid(x, y, z);
 
@@ -18,9 +21,24 @@ W = zeros(size(X));
 for i = 1:(length(X)*length(Y)*length(Z))
     
     if (PLOT_GOAL == 1) && (PLOT_OBSTACLE == 1)
-        grad = obstacle_grad([X(i); Y(i); Z(i)]) + score_grad([X(i); Y(i); Z(i)]);
+        obs_grad = obstacle_grad([X(i); Y(i); Z(i)]);
+        scr_grad = score_grad([X(i); Y(i); Z(i)]);
+        a = atan2(norm(cross(obs_grad, scr_grad)),dot(obs_grad, scr_grad)); % Angle between gradients
+        k = a/pi;           % scaling factor
+        grad =  k*obs_grad + (1-k)*scr_grad;
     elseif PLOT_OBSTACLE == 1
-        grad = obstacle_grad([X(i); Y(i); Z(i)]);
+        if WALL_FOLLOWER == 1
+            g = obstacle_grad([X(i); Y(i); Z(i)]);
+            if sum(g) ~= 0
+                g_T = [-g(2); g(1); g(3)];
+                g0 = cross(g, g_T);
+                grad = g0/norm(g0);
+            else
+                grad = [0;0;0];
+            end
+        else
+            grad = obstacle_grad([X(i); Y(i); Z(i)]);
+        end
     else
         grad = score_grad([X(i); Y(i); Z(i)]);
     end
@@ -34,40 +52,49 @@ for i = 1:(length(X)*length(Y)*length(Z))
     W(i) = grad(3);
 end
 
-goal = [0; 5; 10];
+goal = [0; 3; 10];
 
 obstacles = [
     -5,  2,  2, -5, -5; 
-    -1, -1, -1, -1, -1; 
+    -3, -3, -3, -3, -3; 
      9,  9,  2,  2, 9
 ];
 
+% New figure
+fig = figure;
+xlim([min(x(1)), max(x(end))])
+ylim([min(y(1)), max(y(end))])
+zlim([min(z(1)), max(z(end))])
 
 grid on;
 hold on;
 
-plot3(goal(1), goal(2), goal(3), 'om')
-fill3(obstacles(1, :), obstacles(2, :), obstacles(3, :), 'r')
+% plot and label goal
+plot3(goal(1), goal(2), goal(3), 'om', 'linewidth', 3)
+text(goal(1), goal(2), goal(3)-1, 'Goal', 'FontSize', 14)
+
+% plot wall
+fill3(obstacles(1, :), obstacles(2, :), obstacles(3, :), [0.6350 0.0780 0.1840])
 
 if STREAMLINES == 1
-    STREAM_STEPSIZE = 20/2;
-    x1 = -10:STREAM_STEPSIZE:10;
-    y1 = -10:STREAM_STEPSIZE:10;
-    z1 = 0:STREAM_STEPSIZE:20;
+    STREAM_STEPSIZE = 15/2;
+    x1 = -10:STREAM_STEPSIZE:5;
+    y1 = -10:STREAM_STEPSIZE:5;
+    z1 = 0:STREAM_STEPSIZE:15;
         
     [X1, Y1, Z1] = meshgrid(x1, y1, z1);
     streamline(X, Y, Z, U, V, W, X1, Y1, Z1)
 end
 
 if VECTORS == 1
-    colormap turbo
-    quiverC3D(X, Y, Z, U, V, W, 'Colorbar', true)
+    colormap parula
+    quiverC3D(X, Y, Z, U, V, W, 'Colorbar', true, 'LineWidth', 1)
 end
 
-view(-45,20)
+view(75, 18)
 
 xlabel('x')
 ylabel('y')
 zlabel('z')
-legend('goal', 'obstacles', 'gradient')
+legend({'goal', 'wall', 'gradient'}, 'location', 'northeast')
 

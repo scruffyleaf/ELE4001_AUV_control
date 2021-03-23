@@ -5,7 +5,7 @@ function gradient = obstacle_grad(position)
     
     obstacles = [
         -5,  2,  2, -5, -5; 
-        -1, -1, -1, -1, -1; 
+        -3, -3, -3, -3, -3; 
          9,  9,  2,  2,  9
     ];
 
