@@ -2,10 +2,10 @@ clear;
 close all;
 
 % Load model
-load_system('AUV_main');
+load_system('AUV_APF');
 
 % Simulate model
-out = sim('AUV_main');
+out = sim('AUV_APF');
 
 % Parse out the log data
 times = out.logsout{1}.Values.Time;
@@ -51,8 +51,8 @@ text(goal(2)-0.3, goal(1)-0.3, -goal(3)-0.3, 'Goal', 'FontSize', 14)
 
 % labels and titles
 title('AUV pathfinding')
-xlabel('North axis (m)');
-ylabel('East axis (m)');
+xlabel('East axis (m)');
+ylabel('North axis (m)');
 zlabel('Depth (m)');
 legend('AUV path', 'Planned trajectory', 'Wall', 'Goal')
 %     view(210, 35)

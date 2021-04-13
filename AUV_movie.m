@@ -2,10 +2,10 @@ clear;
 close all;
 
 % Load model
-load_system('AUV_main');
+load_system('AUV_APF');
 
 % Simulate model
-out = sim('AUV_main');
+out = sim('AUV_APF');
 
 % Parse out the log data
 sampleTimes = out.logsout{1}.Values.Time;

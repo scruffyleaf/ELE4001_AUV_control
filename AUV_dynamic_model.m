@@ -4,7 +4,7 @@ function [M, C, D, g] = AUV_dynamic_model(v)
 
     %
     % AUV constants
-    r_g = [0, 0, 0]; % Location of CG wrt CO
+    r_g = [0, 0, 0]; % Location of CG with respect to CO
     m = 12.55;  % mass in kg
     r = 0.075;  % radius in m
     l = 0.71;   % length in m
@@ -16,15 +16,19 @@ function [M, C, D, g] = AUV_dynamic_model(v)
     I_xx = m*(r^2)/2;
     I_yy = m*(3*r^2 + l^2)/12;
     I_zz = m*(3*r^2 + l^2)/12;
-    I_g = [I_xx, 0, 0;
-           0, I_yy, 0;
-           0, 0, I_zz];
+    I_g = [
+        I_xx, 0,    0;
+        0,    I_yy, 0;
+        0,    0,    I_zz
+    ];
 
     % Mass matrix
-    M_RB = [m*eye(3),       -m*S_mtrx(r_g);
-            m*S_mtrx(r_g),  I_g];
+    M_RB = [
+        m*eye(3),       -m*S_mtrx(r_g);
+        m*S_mtrx(r_g),  I_g
+    ];
 
-    % Added mass terms Fossen pg 37, 38
+    % Added mass terms Fossen 1994 p.37,38
     X_u = 0.1*m;
     Y_v = m;
     Z_w = m;
@@ -39,16 +43,20 @@ function [M, C, D, g] = AUV_dynamic_model(v)
     % 
     % Coriolis and centripetal matrix
     v_2 = [v(4); v(5); v(6)];
-    C_RB = [m*S_mtrx(v_2),             -m*S_mtrx(v_2)*S_mtrx(r_g);
-            m*S_mtrx(r_g)*S_mtrx(v_2), -S_mtrx(I_g*v_2)];
+    C_RB = [
+        m*S_mtrx(v_2),             -m*S_mtrx(v_2)*S_mtrx(r_g);
+        m*S_mtrx(r_g)*S_mtrx(v_2), -S_mtrx(I_g*v_2)
+    ];
 
-    % Fossen pg. 37
+    % Fossen 1994 p.37
     C_A11 = zeros(3);
     C_A12 = -S_mtrx([X_u*v(1), Y_v*v(2), Z_w*v(3)]);
     C_A21 = C_A12;
     C_A22 = -S_mtrx([K_p*v(4), M_q*v(5), N_r*v(6)]);
-    C_A = [C_A11, C_A12;
-           C_A21, C_A22];
+    C_A = [
+        C_A11, C_A12;
+        C_A21, C_A22
+    ];
 
     C = C_RB;
     
@@ -58,13 +66,17 @@ function [M, C, D, g] = AUV_dynamic_model(v)
     A_yz = pi*0.075^2;
     A_zx = 0.71*0.15;
     A_xy = 0.71*0.15;
-    D = diag(0.5*rho*[A_yz*abs(v(1)); 
-                      A_zx*abs(v(2)); 
-                      A_xy*abs(v(3)); 
-                      A_yz*abs(v(4));
-                      A_xy*abs(v(5));
-                      A_zx*abs(v(6));
-                      ]);
+    
+    C_d = [0.28; 0.45; 0.45; 0.05; 0.45; 0.45]; % Coefficents of drag
+    
+    D = diag(0.5*rho*C_d.*[
+        A_yz*abs(v(1)); 
+        A_zx*abs(v(2)); 
+        A_xy*abs(v(3)); 
+        A_yz*abs(v(4));
+        A_xy*abs(v(5));
+        A_zx*abs(v(6));
+    ]);
                   
                   
     %
