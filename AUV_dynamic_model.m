@@ -10,7 +10,7 @@ function [M, C, D, g] = AUV_dynamic_model(v)
     l = 0.71;   % length in m
     rho = 1000; % density of water
 
-    
+
     %
     % Inertial tensors
     I_xx = m*(r^2)/2;
@@ -63,11 +63,11 @@ function [M, C, D, g] = AUV_dynamic_model(v)
 
     %
     % Dampening matrix
-    A_yz = pi*0.075^2;
-    A_zx = 0.71*0.15;
-    A_xy = 0.71*0.15;
+    A_yz = pi*r^2; % frontal area of each plane
+    A_zx = 2*r*l;
+    A_xy = 2*r*l;
     
-    C_d = [0.28; 0.45; 0.45; 0.05; 0.45; 0.45]; % Coefficents of drag
+    C_d = [0.25; 0.60; 0.60; 0.05; 0.60; 0.60]; % Coefficents of drag
     
     D = diag(0.5*rho*C_d.*[
         A_yz*abs(v(1)); 
@@ -81,5 +81,5 @@ function [M, C, D, g] = AUV_dynamic_model(v)
                   
     %
     % Gravitational and buoyancy forces
-    g = zeros(6, 1); % assume neutral
+    g = zeros(6, 1); % assume neutral buoyancy
 end

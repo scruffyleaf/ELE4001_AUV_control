@@ -36,28 +36,36 @@ zlim([min(-pos_D(:)-1) max(-pos_D(:)+1)])
 grid on
 hold on
 
+% define colours
+light_blue = [0,161,225]/255;
+dark_blue = [0,77,126]/255;
+green = [102,153,51]/255;
+orange = [241,137,3]/255;
+yellow = [255,204,0]/255;
+dark_red = [143,14,32]/255;
+purple = [172,0,77]/255;
+
 % Plot AUV path
-plot3(pos_E, pos_N, -pos_D, 'linewidth', 2);
+plot3(pos_E, pos_N, -pos_D, 'color', light_blue, 'linewidth', 2)
 
 % Plot AUV planned trajectory
-plot3(traj_E, traj_N, -traj_D, 'color', [0.9290 0.6940 0.1250], 'linewidth', 1);
+plot3(traj_E, traj_N, -traj_D, 'color', yellow, 'linewidth', 1.5)
 
 % Plot wall
-fill3(wall_E, wall_N, -wall_D, [0.6350 0.0780 0.1840])
+fill3(wall_E, wall_N, -wall_D, dark_red)
 
 % Plot goal
-plot3(goal(2), goal(1), -goal(3), 'om', 'linewidth', 3)
-text(goal(2)-0.3, goal(1)-0.3, -goal(3)-0.3, 'Goal', 'FontSize', 14)
+scatter3(goal(2), goal(1), -goal(3), 60, 'magenta', 'linewidth', 2)
+text(goal(2)+4, goal(1)-1, -goal(3), 'Goal', 'FontSize', 18)
 
 % labels and titles
-title('AUV pathfinding')
+title('APF guidance')
 xlabel('East axis (m)');
 ylabel('North axis (m)');
 zlabel('Depth (m)');
 legend('AUV path', 'Planned trajectory', 'Wall', 'Goal')
-%     view(210, 35)
-%     view(155, 15)
-%     view(330, 5)
-    view(358, 5)
+ax = gca;
+ax.FontSize = 16;
+    view(150, 20)
 
 
